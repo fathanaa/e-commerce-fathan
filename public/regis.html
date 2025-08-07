@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register - Goldentime</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white min-h-screen flex items-center justify-center">
+  <div class="w-full max-w-3xl bg-cover bg-center p-10" style="background-image: url('t');">
+    <div class="bg-black bg-opacity-60 p-8 rounded-lg shadow-lg">
+      <!-- Back Button -->
+      <button onclick="goBack()" class="text-gray-500 hover:text-gray-700 focus:outline-none mb-4">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+      </button>
+
+      <!-- Title -->
+      <h2 class="text-2xl font-bold text-center mb-6">REGISTER</h2>
+
+      <form id="register-form" class="space-y-4">
+        <!-- Name Fields -->
+        <div class="grid grid-cols-2 gap-4">
+          <input type="text" id="first-name" placeholder="First Name" class="px-4 py-2 rounded bg-gray-300 text-black placeholder-gray-600 focus:outline-none" />
+          <input type="text" id="last-name" placeholder="Last Name" class="px-4 py-2 rounded bg-gray-300 text-black placeholder-gray-600 focus:outline-none" />
+        </div>
+
+        <!-- Email & Phone -->
+        <div class="grid grid-cols-2 gap-4">
+          <input type="email" id="email" placeholder="Email" class="px-4 py-2 rounded bg-gray-300 text-black placeholder-gray-600 focus:outline-none" />
+          <input type="text" id="phone" placeholder="No Handphone" class="px-4 py-2 rounded bg-gray-300 text-black placeholder-gray-600 focus:outline-none" />
+        </div>
+
+        <!-- Password Fields -->
+        <div class="grid grid-cols-2 gap-4">
+          <input type="password" id="password" placeholder="Password" class="px-4 py-2 rounded bg-gray-300 text-black placeholder-gray-600 focus:outline-none" />
+          <input type="password" id="confirm-password" placeholder="Confirm password" class="px-4 py-2 rounded bg-gray-300 text-black placeholder-gray-600 focus:outline-none" />
+        </div>
+
+        <!-- Password Hint -->
+        <p class="text-xs text-white mt-2">
+          Panjang kata sandi harus minimal 12 karakter, termasuk satu huruf kecil, satu huruf besar, satu angka, dan satu karakter khusus.
+        </p>
+
+        <!-- Checkbox -->
+        <div class="flex items-start space-x-2 mt-4">
+          <input type="checkbox" id="terms" class="mt-1" />
+          <p class="text-xs text-white">
+            Saya ingin membuat akun dengan untuk menjadi bagian dari lingkaran dalamnya yang eksklusif dan menerima informasi melalui email terkait akun saya dan menyetujui Persyaratan Penggunaan. Saya mengonfirmasi telah membaca dan memahami Pemberitahuan Privasi.*
+          </p>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="w-full bg-gray-400 text-black py-2 mt-4 rounded hover:bg-gray-500 transition">
+          SUBMIT
+        </button>
+      </form>
+
+      <!-- Info -->
+      <p class="text-sm mt-6 font-semibold">
+        Buat akun untuk mendapatkan manfaat dari layanan eksklusif kami, jadilah orang pertama yang menemukan produk, acara, dan publikasi terbaru kami, serta mengelola informasi pribadi Anda.
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // Navigation
+    function goBack() {
+      window.history.back();
+    }
+
+    // Form submission with validation and alert
+    document.getElementById("register-form").addEventListener("submit", function(event) {
+      event.preventDefault(); // Prevent default form submission
+
+      // Get form field values
+      const firstName = document.getElementById("first-name").value.trim();
+      const lastName = document.getElementById("last-name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const confirmPassword = document.getElementById("confirm-password").value.trim();
+      const terms = document.getElementById("terms").checked;
+
+      // Check if all fields are filled and terms are agreed
+      if (!firstName || !lastName || !email || !phone || !password || !confirmPassword || !terms) {
+        alert("Harap isi semua kolom dan setujui Persyaratan Penggunaan sebelum mengirimkan.");
+        return;
+      }
+
+      // Proceed with confirmation alert
+      if (confirm("Apakah Anda yakin ingin mengirimkan data pendaftaran?")) {
+        // Redirect to homepage after successful submission
+        window.location.href = "home.html";
+      } else {
+        alert("Pendaftaran dibatalkan.");
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Goldentime</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="h-screen bg-gray-100">
+  <div class="flex h-full">
+    <!-- Left Logo Section -->
+    <div class="w-1/2 bg-[#0E1621] flex items-center justify-center">
+      <div class="text-center">
+        <img src="golden.jpg" alt="Goldentime Logo" class="w-64 mb-6" />
+      </div>
+    </div>
+
+    <!-- Right Form Section -->
+    <div class="w-1/2 bg-gray-200 flex items-center justify-center">
+      <div class="w-full max-w-md px-8 py-12 relative">
+        <!-- Back Button -->
+        <a href="landing.html" class="absolute top-4 left-4 text-gray-500 hover:text-gray-700 focus:outline-none">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+        </a>
+
+        <!-- Icon -->
+        <div class="text-center mb-6">
+          <div class="w-8 h-8 mx-auto rounded-full border-2 border-black flex items-center justify-center text-black">
+            🕒
+          </div>
+        </div>
+
+        <h2 class="text-2xl font-bold text-center mb-8">LOGIN</h2>
+
+        <form id="login-form">
+          <div class="mb-4">
+            <input type="email" id="email" placeholder="Email" class="w-full px-4 py-2 rounded bg-gray-400 text-white placeholder-white focus:outline-none" />
+          </div>
+          <div class="mb-2">
+            <input type="password" id="password" placeholder="Password" class="w-full px-4 py-2 rounded bg-gray-500 text-white placeholder-white focus:outline-none" />
+          </div>
+
+          <div class="flex justify-between text-sm text-gray-600 mb-6">
+            <label><input type="checkbox" class="mr-1"> Ingatkan saya</label>
+            <a href="#" class="hover:underline">Lupa Password</a>
+          </div>
+
+          <button type="submit" class="w-full bg-black text-white py-2 rounded hover:opacity-90 transition">LOGIN</button>
+
+          <div class="text-center text-sm text-gray-600 my-4">
+            Belum punya akun?
+          </div>
+
+          <a href="regis.html" class="block w-full bg-white text-black py-2 rounded hover:bg-gray-100 transition text-center">SIGN UP</a>
+        </form>
+
+        <p class="text-center text-xs text-black-600 mt-6 font-semibold">
+          © 2025 GoldenTime. Semua Hak Cipta
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Form submission with validation and alert
+    document.getElementById("login-form").addEventListener("submit", function(event) {
+      event.preventDefault(); // Prevent default form submission
+
+      // Get form field values
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      // Check if all fields are filled
+      if (!email || !password) {
+        alert("Harap isi semua kolom sebelum mengirimkan.");
+        return;
+      }
+
+      // Proceed with confirmation alert
+      if (confirm("Apakah Anda yakin ingin mengirimkan data login?")) {
+        // Redirect to homepage after successful submission
+        window.location.href = "home.html";
+      } else {
+        alert("Login dibatalkan.");
+      }
+    });
+  </script>
+</body>
+</html>

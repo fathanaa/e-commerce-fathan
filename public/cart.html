@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="bg-gray-400 text-white p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold">GoldenCart</h1>
+            <div class="flex items-center space-x-4">
+                <a href="home.html" class="bg-black hover:bg-blue-900 text-white px-4 py-2 rounded-lg">Back to Home</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-4 flex-grow">
+        <h2 class="text-3xl font-bold text-center mb-6">Your Cart</h2>
+        <div class="flex justify-between items-center mb-4">
+            <button id="select-all-button" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg" onclick="toggleSelectAll()">Select All</button>
+            <button id="remove-selected-button" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg hidden" onclick="confirmRemoveSelected()">Remove Selected</button>
+        </div>
+        <div id="cart-list" class="space-y-4"></div>
+        <div class="mt-6 flex justify-between items-center">
+            <p class="text-xl font-semibold">Total: $<span id="cart-total">0.00</span></p>
+            <button 
+                id="checkout-button" 
+                class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg"
+                onclick="showCheckoutModal()">
+                Checkout
+            </button>
+        </div>
+    </main>
+
+    <!-- Checkout Modal -->
+    <div id="checkout-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl">
+            <h3 class="text-2xl font-bold mb-4 text-center text-gray-800">Checkout Summary</h3>
+            <div id="checkout-items" class="space-y-4 max-h-96 overflow-y-auto"></div>
+            <p class="text-lg font-semibold mt-4 text-right text-gray-800">Total: $<span id="checkout-total">0.00</span></p>
+            <div class="flex justify-end space-x-4 mt-6">
+                <button 
+                    id="cancel-checkout" 
+                    class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded-lg"
+                    onclick="hideCheckoutModal()">
+                    Cancel
+                </button>
+                <button 
+                    id="confirm-checkout" 
+                    class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg"
+                    onclick="checkout()">
+                    Confirm
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white p-4">
+        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-4 md:mb-0">
+                <h2 class="text-3xl font-bold text-yellow-400">GoldenCart</h2>
+                <p class="text-sm mt-2">
+                    GoldenCart adalah platform digital yang dirancang untuk mempromosikan dan menjual berbagai jenis jam tangan, baik untuk pria maupun wanita. Website ini bertujuan memberikan pengalaman belanja online yang informatif, elegan, dan modern, serta merepresentasikan citra brand yang premium.
+                </p>
+                <p class="text-xs mt-2">© 2025 GoldenCart. Semua Hak Cipta</p>
+            </div>
+            <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8 text-sm">
+                <div>
+                    <h3 class="font-semibold mb-2">Information</h3>
+                    <ul class="space-y-1">
+                        <li><a href="#" class="hover:text-yellow-400">Contact Us</a></li>
+                        <li><a href="#" class="hover:text-yellow-400">Terms & Condition</a></li>
+                        <li><a href="#" class="hover:text-yellow-400">Join The Crew</a></li>
+                        <li><a href="#" class="hover:text-yellow-400">Community</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-semibold mb-2">Ikuti Kami</h3>
+                    <div class="flex space-x-2">
+                        <a href="#" class="text-white hover:text-yellow-400">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm0 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0 6c-2.757 0-5 2.243-5 5s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5zm0 2c1.656 0 3 1.344 3 3s-1.344 3-3 3-3-1.344-3-3 1.344-3 3-3z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-white hover:text-yellow-400">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-2.724 2.165-5.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-2.717 0-4.92 2.203-4.92 4.917 0 .386.045.762.127 arboretumC7.691 8.094 4.066 6.13 1.64 3.161c-.427.732-.666 1.585-.666 2.475 0-1.71.871 3.213 2.188 4.096-.807-.026-1.566-.248-2.228-.616v.061c0 2.385 1.693 4.374 3.946 4.827-.413.111-.849.171-1.296.171-.314 0-.615-.03-.916-.086.631 1.953 2.445 3.377 4.604 3.417-1.68 1.319-3.809 2.105-6.102 2.105-.396 0-.788-.023-1.175-.068 2.187 1.405 4.787 2.224 7.574 2.224 9.055 0 14.008-7.496 14.008-13.985 0-.21 0-.42-.015-.63.962-.695 1.8-1.562 2.457-2.549z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-white hover:text-yellow-400">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM10 15.5v-7l6 3.5-6 3.5z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        // Display cart items
+        function displayCart() {
+            const cartList = document.getElementById('cart-list');
+            const cartTotal = document.getElementById('cart-total');
+            const selectAllButton = document.getElementById('select-all-button');
+            const removeSelectedButton = document.getElementById('remove-selected-button');
+            const checkoutButton = document.getElementById('checkout-button');
+            cartList.innerHTML = '';
+
+            if (cart.length === 0) {
+                cartList.innerHTML = '<p class="text-center text-gray-500">Your cart is empty.</p>';
+                checkoutButton.disabled = true;
+                checkoutButton.classList.add('opacity-50', 'cursor-not-allowed');
+                selectAllButton.classList.add('opacity-50', 'cursor-not-allowed');
+                selectAllButton.disabled = true;
+                removeSelectedButton.classList.add('hidden');
+                cartTotal.textContent = '0.00';
+                return;
+            }
+
+            let total = 0;
+            let anySelected = false;
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                if (item.selected) {
+                    total += itemTotal;
+                    anySelected = true;
+                }
+                const cartItem = `
+                    <div class="bg-white p-4 rounded-lg shadow-md flex items-center justify-between cursor-pointer cart-item ${item.selected ? 'border-2 border-blue-500' : ''}" data-id="${item.id}">
+                        <div class="flex items-center space-x-4">
+                            <img src="${item.image}" alt="${item.title}" class="w-24 h-24 object-contain">
+                            <div>
+                                <h3 class="text-lg font-semibold">${item.title}</h3>
+                                <p class="text-gray-600">$${item.price} x ${item.quantity}</p>
+                                <p class="text-gray-600 font-semibold">Total: $${itemTotal.toFixed(2)}</p>
+                                <div class="flex items-center space-x-2 mt-2 quantity-controls">
+                                    <button 
+                                        onclick="updateQuantity(${item.id}, ${item.quantity - 1})"
+                                        class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-2 py-1 rounded ${item.quantity === 1 ? 'opacity-50 cursor-not-allowed' : ''}"
+                                        ${item.quantity === 1 ? 'disabled' : ''}>
+                                        -
+                                    </button>
+                                    <span>${item.quantity}</span>
+                                    <button 
+                                        onclick="updateQuantity(${item.id}, ${item.quantity + 1})"
+                                        class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-2 py-1 rounded">
+                                        +
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <button 
+                            onclick="confirmRemove(${item.id})"
+                            class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg remove-button">
+                            Remove
+                        </button>
+                    </div>
+                `;
+                cartList.innerHTML += cartItem;
+            });
+            cartTotal.textContent = total.toFixed(2);
+            checkoutButton.disabled = !anySelected;
+            checkoutButton.classList.toggle('opacity-50', !anySelected);
+            checkoutButton.classList.toggle('cursor-not-allowed', !anySelected);
+            selectAllButton.classList.remove('opacity-50', 'cursor-not-allowed');
+            selectAllButton.disabled = false;
+            updateRemoveSelectedButton();
+        }
+
+        // Update quantity of an item
+        function updateQuantity(id, newQuantity) {
+            if (newQuantity < 1) return;
+            const item = cart.find(item => item.id === id);
+            if (item) {
+                item.quantity = newQuantity;
+                localStorage.setItem('cart', JSON.stringify(cart));
+                displayCart();
+            }
+        }
+
+        // Confirm removal of a single item
+        function confirmRemove(id) {
+            if (confirm("Apakah Anda yakin ingin menghapus item ini dari keranjang?")) {
+                removeFromCart(id);
+            }
+        }
+
+        // Remove a single item from cart
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            displayCart();
+        }
+
+        // Toggle select all items
+        function toggleSelectAll() {
+            const allSelected = cart.every(item => item.selected);
+            cart.forEach(item => {
+                item.selected = !allSelected;
+            });
+            localStorage.setItem('cart', JSON.stringify(cart));
+            displayCart();
+            updateRemoveSelectedButton();
+        }
+
+        // Confirm removal of selected items
+        function confirmRemoveSelected() {
+            if (confirm("Apakah Anda yakin ingin menghapus semua item yang dipilih dari keranjang?")) {
+                removeSelected();
+            }
+        }
+
+        // Remove selected items
+        function removeSelected() {
+            cart = cart.filter(item => !item.selected);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            displayCart();
+        }
+
+        // Update visibility of Remove Selected button
+        function updateRemoveSelectedButton() {
+            const removeSelectedButton = document.getElementById('remove-selected-button');
+            const anySelected = cart.some(item => item.selected);
+            removeSelectedButton.classList.toggle('hidden', !anySelected);
+        }
+
+        // Show checkout modal
+        function showCheckoutModal() {
+            const selectedItems = cart.filter(item => item.selected);
+            if (selectedItems.length === 0) {
+                alert("Silakan pilih setidaknya satu produk untuk checkout.");
+                return;
+            }
+
+            const checkoutItems = document.getElementById('checkout-items');
+            const checkoutTotal = document.getElementById('checkout-total');
+            checkoutItems.innerHTML = '';
+            let total = 0;
+
+            selectedItems.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                const itemCard = `
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg shadow-sm">
+                        <div class="flex items-center space-x-4">
+                            <img src="${item.image}" alt="${item.title}" class="w-24 h-24 object-contain rounded">
+                            <div>
+                                <h4 class="text-lg font-semibold text-gray-800">${item.title}</h4>
+                                <p class="text-sm text-gray-600">Jumlah: ${item.quantity}</p>
+                                <p class="text-sm text-gray-600">Harga Satuan: $${item.price.toFixed(2)}</p>
+                            </div>
+                        </div>
+                        <p class="text-lg font-semibold text-gray-800">$${itemTotal.toFixed(2)}</p>
+                    </div>
+                `;
+                checkoutItems.innerHTML += itemCard;
+            });
+
+            checkoutTotal.textContent = total.toFixed(2);
+            document.getElementById('checkout-modal').classList.remove('hidden');
+        }
+
+        // Hide checkout modal
+        function hideCheckoutModal() {
+            document.getElementById('checkout-modal').classList.add('hidden');
+        }
+
+        // Checkout selected items
+        function checkout() {
+            const selectedItems = cart.filter(item => item.selected);
+            if (selectedItems.length > 0) {
+                // Load existing orders or initialize empty array
+                let orders = JSON.parse(localStorage.getItem('orders')) || [];
+                
+                // Create new order
+                const order = {
+                    id: `ORD${Math.floor(1000 + Math.random() * 9000)}`, // Generate random order ID
+                    date: new Date().toISOString().split('T')[0], // Current date in YYYY-MM-DD
+                    items: selectedItems.map(item => ({
+                        name: item.title,
+                        quantity: item.quantity,
+                        price: item.price
+                    })),
+                    total: selectedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0),
+                    status: "Dikirim" // Default status
+                };
+
+                // Add new order to orders array
+                orders.push(order);
+                localStorage.setItem('orders', JSON.stringify(orders));
+
+                // Remove checked-out items from cart
+                cart = cart.filter(item => !item.selected);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                
+                hideCheckoutModal();
+                displayCart();
+                alert('Checkout successful! Thank you for your purchase.');
+            }
+        }
+
+        // Toggle item selection
+        function toggleItemSelection(id) {
+            const item = cart.find(item => item.id === id);
+            if (item) {
+                item.selected = !item.selected;
+                localStorage.setItem('cart', JSON.stringify(cart));
+                displayCart();
+                updateRemoveSelectedButton();
+            }
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            // Ensure each cart item has a selected property
+            cart = cart.map(item => ({ ...item, selected: item.selected || false }));
+            localStorage.setItem('cart', JSON.stringify(cart));
+            displayCart();
+
+            // Add event listener for cart item clicks
+            document.getElementById('cart-list').addEventListener('click', (event) => {
+                const cartItem = event.target.closest('.cart-item');
+                if (!cartItem) return;
+
+                const itemId = parseInt(cartItem.dataset.id);
+                
+                // Prevent selection toggle if clicking on quantity controls or remove button
+                if (event.target.closest('.quantity-controls') || event.target.closest('.remove-button')) {
+                    event.stopPropagation();
+                    return;
+                }
+
+                toggleItemSelection(itemId);
+            });
+
+            // Update Remove Selected button onclick to include confirmation
+            document.getElementById('remove-selected-button').onclick = confirmRemoveSelected;
+        });
+    </script>
+</body>
+</html>
